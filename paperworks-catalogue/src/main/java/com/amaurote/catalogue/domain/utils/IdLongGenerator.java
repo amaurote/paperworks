@@ -10,8 +10,7 @@ import static java.lang.Math.abs;
 
 public class IdLongGenerator implements IdentifierGenerator {
     @Override
-    public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o)
-            throws HibernateException {
+    public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws HibernateException {
         Random random = new Random();
         return abs(random.nextLong());
     }
