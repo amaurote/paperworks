@@ -1,4 +1,4 @@
-package com.amaurote.catalogue.domain.utils;
+package com.amaurote.domain.utils;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

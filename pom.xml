@@ -11,6 +11,9 @@
 
     <modules>
         <module>paperworks-catalogue</module>
+        <module>paperworks-social</module>
+        <module>paperworks-api</module>
+        <module>paperworks-domain</module>
     </modules>
 
     <properties>

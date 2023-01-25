@@ -1,4 +1,4 @@
-package com.amaurote.catalogue.domain.entity;
+package com.amaurote.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,11 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "PUBLISHERS")
-public class Publisher {
+@Table(name = "AUTHORS")
+public class Author {
 
     @Id
-    @GenericGenerator(name = "id", strategy = "com.amaurote.catalogue.domain.utils.IdLongGenerator")
+    @GenericGenerator(name = "id", strategy = "com.amaurote.domain.utils.IdLongGenerator")
     @GeneratedValue(generator = "id")
     private Long id;
 

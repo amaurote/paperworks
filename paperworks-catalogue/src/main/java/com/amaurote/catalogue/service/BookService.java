@@ -1,24 +1,13 @@
 package com.amaurote.catalogue.service;
 
-import com.amaurote.catalogue.domain.entity.Book;
-import com.amaurote.catalogue.dto.BookDTO;
-import com.amaurote.catalogue.exception.CatalogueException;
-import com.amaurote.catalogue.repository.BookRepository;
-import com.amaurote.catalogue.utils.CatUtils;
-import org.springframework.stereotype.Service;
+import com.amaurote.domain.entity.Book;
 
-@Service
-public record BookService(BookRepository repository) {
+import java.util.List;
 
-    public Book getBookByCatalogueNumber(long catId) {
-        return repository.findOneByCatalogueId(catId).orElse(null);
-    }
+public interface BookService {
 
-    public BookDTO bookToDTO(Book book) throws CatalogueException {
-        return BookDTO.builder()
-                .name(book.getName())
-                .catalogueId(book.getCatalogueId())
-                .catalogueIdPretty(CatUtils.prettifyCatalogueNumber9(book.getCatalogueId()))
-                .build();
-    }
+    Book getBookByCatalogueNumber(long catId);
+
+    List<Book> searchBookByTitle(String term);
+
 }

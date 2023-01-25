@@ -1,4 +1,4 @@
-package com.amaurote.catalogue.domain.entity;
+package com.amaurote.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
