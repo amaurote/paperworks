@@ -1,29 +1,42 @@
 package com.amaurote.controller.catalogue;
 
 import com.amaurote.catalogue.service.BookService;
+import com.amaurote.controller.BaseController;
+import com.amaurote.dto.BookDTO;
 import com.amaurote.mapper.BookDTOMapper;
 import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/cat")
-public record BookController(BookService service, BookDTOMapper bookDTOMapper) {
+public record BookController(BookService service,
+                             BookDTOMapper bookDTOMapper) implements BaseController {
 
     @GetMapping(value = "/{catId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBookByCatalogueId(@PathVariable @NotNull String catId) {
         var idStr = catId.replaceAll("[^0-9]", "");
 
-        if (StringUtils.isBlank(catId))
-            return ResponseEntity.badRequest().build();
+        if (StringUtils.isBlank(idStr))
+            return badRequest();
 
         var book = service.getBookByCatalogueNumber(Long.parseLong(idStr));
-        return ResponseEntity.ok(bookDTOMapper.apply(book));
+        return ok(bookDTOMapper.apply(book));
+    }
+
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<BookDTO>> search(@RequestParam(required = false) String term) {
+        if (StringUtils.isBlank(term))
+            return ok(Collections.emptyList());
+
+        var books = service.searchBookByTitle(term);
+        return ok(books.stream().map(bookDTOMapper).collect(Collectors.toList()));
     }
 
 }

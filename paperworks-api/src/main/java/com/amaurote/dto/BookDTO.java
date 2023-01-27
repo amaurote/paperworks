@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -26,8 +26,8 @@ public class BookDTO {
 
     private Integer yearPublished;
 
-    private List<AuthorDTO> authorship;
-    private PublisherDTO publisher;
+    private Map<Long, String> authorship;
+    private Map<Long, String> publisher;
     private Language language;
 
     private Integer pageCount;

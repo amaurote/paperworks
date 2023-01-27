@@ -10,6 +10,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import static org.hamcrest.Matchers.hasValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,14 +24,20 @@ public class BookControllerIT {
 
     @Test
     @Sql("classpath:/scripts/catalogue/catalogue.sql")
-    public void getBookByCatalogueId() throws Exception {
-        mvc.perform(get("/cat/123456789"))
+    public void getBookByCatalogueId_success() throws Exception {
+        mvc.perform(get("/cat/12-34-56-78-9"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.catalogueIdPretty").value("123-456-789"))
                 .andExpect(jsonPath("$.title").value("Sample Book"))
-                .andExpect(jsonPath("$.publisher.id").value(1))
-                .andDo(MockMvcResultHandlers.print());
+                .andExpect(jsonPath("$.publisher", hasValue("Sample Publisher")));
+//                .andDo(MockMvcResultHandlers.print());
 
+    }
+
+    @Test
+    public void getBookByCatalogueId_badRequest() throws Exception {
+        mvc.perform(get("/cat/abcd-efgh"))
+                .andExpect(status().isBadRequest());
     }
 
 }

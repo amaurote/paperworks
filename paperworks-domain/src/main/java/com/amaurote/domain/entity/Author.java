@@ -18,6 +18,9 @@ public class Author {
     @GeneratedValue(generator = "id")
     private Long id;
 
+    @Column(name = "display_name", nullable = false)
+    private String displayName;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -26,9 +29,6 @@ public class Author {
 
     @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "display_name")
-    private String displayName;
 
     @Column(name = "bio")
     private String bio;

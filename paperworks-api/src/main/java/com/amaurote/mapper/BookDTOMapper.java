@@ -1,18 +1,17 @@
 package com.amaurote.mapper;
 
 import com.amaurote.catalogue.utils.CatUtils;
+import com.amaurote.domain.entity.Author;
 import com.amaurote.dto.BookDTO;
 import com.amaurote.domain.entity.Book;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public record BookDTOMapper(
-        AuthorDTOMapper authorDTOMapper,
-        PublisherDTOMapper publisherDTOMapper)
-        implements Function<Book, BookDTO> {
+public record BookDTOMapper() implements Function<Book, BookDTO> {
 
     @Override
     public BookDTO apply(Book book) {
@@ -28,10 +27,8 @@ public record BookDTOMapper(
                 .overview(book.getOverview())
                 .yearPublished(book.getYearPublished())
                 .authorship(book.getAuthorship()
-                        .stream()
-                        .map(authorDTOMapper)
-                        .collect(Collectors.toList()))
-                .publisher(publisherDTOMapper.apply(book.getPublisher()))
+                        .stream().collect(Collectors.toMap(Author::getId, Author::getDisplayName)))
+                .publisher(Collections.singletonMap(book.getPublisher().getId(), book.getPublisher().getName()))
                 .language(book.getLanguage())
                 .pageCount(book.getPages())
                 .weight(book.getWeight())

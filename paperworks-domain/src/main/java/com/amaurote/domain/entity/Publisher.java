@@ -18,7 +18,7 @@ public class Publisher {
     @GeneratedValue(generator = "id")
     private Long id;
 
-    @Column(name = "publisher")
+    @Column(name = "publisher", nullable = false)
     private String name;
 
     @Column
