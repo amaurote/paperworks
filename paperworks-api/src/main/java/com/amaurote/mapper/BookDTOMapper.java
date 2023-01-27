@@ -6,9 +6,13 @@ import com.amaurote.domain.entity.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
-public class BookDTOMapper implements Function<Book, BookDTO> {
+public record BookDTOMapper(
+        AuthorDTOMapper authorDTOMapper,
+        PublisherDTOMapper publisherDTOMapper)
+        implements Function<Book, BookDTO> {
 
     @Override
     public BookDTO apply(Book book) {
@@ -23,8 +27,11 @@ public class BookDTOMapper implements Function<Book, BookDTO> {
                 .title(book.getTitle())
                 .overview(book.getOverview())
                 .yearPublished(book.getYearPublished())
-                .authorship(null /* todo */)
-                .publisher(null /* todo */)
+                .authorship(book.getAuthorship()
+                        .stream()
+                        .map(authorDTOMapper)
+                        .collect(Collectors.toList()))
+                .publisher(publisherDTOMapper.apply(book.getPublisher()))
                 .language(book.getLanguage())
                 .pageCount(book.getPages())
                 .weight(book.getWeight())

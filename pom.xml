@@ -14,6 +14,7 @@
         <module>paperworks-social</module>
         <module>paperworks-api</module>
         <module>paperworks-domain</module>
+        <module>paperworks-integration-test</module>
     </modules>
 
     <properties>
@@ -49,6 +50,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -10,7 +10,7 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "AUTHORS")
+@Table(name = "authors")
 public class Author {
 
     @Id
@@ -18,7 +18,19 @@ public class Author {
     @GeneratedValue(generator = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "display_name")
+    private String displayName;
+
+    @Column(name = "bio")
+    private String bio;
 
 }

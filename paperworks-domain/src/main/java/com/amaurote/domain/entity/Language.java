@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "LANGUAGE")
+@Table(name = "language")
 public class Language {
 
     @Id // ISO 639-1
