@@ -8,38 +8,30 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.hasValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = PaperworksApplication.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 @Transactional
-public class BookControllerIT {
+public class CatalogueControllerIT {
 
     @Autowired
     private MockMvc mvc;
 
     @Test
     @Sql("classpath:/scripts/catalogue/catalogue.sql")
-    public void getBookByCatalogueId_success() throws Exception {
-        mvc.perform(get("/cat/12-34-56-78-9"))
+    public void getAllLanguages() throws Exception {
+        mvc.perform(get("/cat/languages"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.catalogueIdPretty").value("123-456-789"))
-                .andExpect(jsonPath("$.title").value("Sample Book"))
-                .andExpect(jsonPath("$.publisher", hasValue("Sample Publisher")));
-//                .andDo(MockMvcResultHandlers.print());
-
-    }
-
-    @Test
-    public void getBookByCatalogueId_badRequest() throws Exception {
-        mvc.perform(get("/cat/abcd-efgh"))
-                .andExpect(status().isBadRequest());
+                .andExpect(jsonPath("[0].code").value("en"))
+                .andExpect(jsonPath("[0].language").value("english"))
+                .andExpect(jsonPath("[1].code").value("sk"))
+                .andExpect(jsonPath("[1].language").value("slovak"));
     }
 
 }

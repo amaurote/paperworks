@@ -16,7 +16,7 @@ public class Language {
     @Column(length = 2)
     private String code;
 
-    @Column(nullable = false, unique = true)
+    @Column(length = 25, nullable = false, unique = true)
     private String language;
 
 }
