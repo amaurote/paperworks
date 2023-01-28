@@ -1,7 +1,8 @@
-package com.amaurote.catalogue.service;
+package com.amaurote.catalogue.service.impl;
 
 import com.amaurote.catalogue.exception.CatalogueException;
 import com.amaurote.catalogue.repository.LanguageRepository;
+import com.amaurote.catalogue.service.LanguageService;
 import com.amaurote.domain.entity.Language;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;

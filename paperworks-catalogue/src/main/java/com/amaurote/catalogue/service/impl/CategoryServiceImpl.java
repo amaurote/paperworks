@@ -1,7 +1,9 @@
-package com.amaurote.catalogue.service;
+package com.amaurote.catalogue.service.impl;
 
 import com.amaurote.catalogue.exception.CatalogueException;
+import com.amaurote.catalogue.helper.CategoryTreeBuilder;
 import com.amaurote.catalogue.repository.CategoryRepository;
+import com.amaurote.catalogue.service.CategoryService;
 import com.amaurote.domain.entity.Category;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
         var parent = repository.findById(1L).orElseThrow(() -> new CatalogueException("Can't find root category"));
         for (String name : names) {
             var existing = repository.findByParentAndName(parent, name).orElse(null);
-            if(existing != null) {
+            if (existing != null) {
                 parent = existing;
             } else {
                 var category = new Category();
@@ -33,5 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Override
+    public String generateTree() {
+        var allCategories = repository.findAll();
+        var treeBuilder = new CategoryTreeBuilder(allCategories);
+        return treeBuilder.build();
+    }
 
 }

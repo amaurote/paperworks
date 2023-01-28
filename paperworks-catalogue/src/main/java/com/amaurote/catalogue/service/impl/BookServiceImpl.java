@@ -1,5 +1,6 @@
-package com.amaurote.catalogue.service;
+package com.amaurote.catalogue.service.impl;
 
+import com.amaurote.catalogue.service.BookService;
 import com.amaurote.domain.entity.Book;
 import com.amaurote.catalogue.repository.BookRepository;
 import org.apache.commons.lang.StringUtils;

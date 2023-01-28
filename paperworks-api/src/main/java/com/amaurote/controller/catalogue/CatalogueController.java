@@ -22,10 +22,10 @@ public record CatalogueController(LanguageService languageService,
         return ok(languageService.getAllLanguages());
     }
 
-//    @GetMapping(value = "/categories/tree", produces = MediaType.TEXT_PLAIN_VALUE)
-//    public ResponseEntity<String> getCategoriesTree() {
-//
-//    }
+    @GetMapping(value = "/categories/tree")
+    public ResponseEntity<String> getCategoryTree() {
+        return ok(categoryService().generateTree());
+    }
 
     @PutMapping(value = "/categories/build-path")
     public ResponseEntity<?> buildCategoryPath(@RequestBody String path) throws CatalogueException {
@@ -38,6 +38,4 @@ public record CatalogueController(LanguageService languageService,
         categoryService.buildCategoryPath(path);
         return ok();
     }
-
-
 }

@@ -6,4 +6,6 @@ public interface CategoryService {
 
     void buildCategoryPath(String path) throws CatalogueException;
 
+    String generateTree();
+
 }
