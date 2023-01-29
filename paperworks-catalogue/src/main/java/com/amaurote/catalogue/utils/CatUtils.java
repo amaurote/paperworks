@@ -20,6 +20,18 @@ public class CatUtils {
         return leadingZeroes.substring(0, 3) + '-' + leadingZeroes.substring(3, 6) + '-' + leadingZeroes.substring(6);
     }
 
+    public static Long stringToCatalogueNumber9(String catIdStr) {
+        if(catIdStr == null)
+            return null;
+
+        var numeric = catIdStr.replaceAll("[^0-9]", "");
+
+        if (StringUtils.isBlank(numeric))
+            return null;
+
+        return Long.parseLong(numeric);
+    }
+
     public static boolean validateISBN(String isbn) {
         if (StringUtils.isBlank(isbn))
             return false;

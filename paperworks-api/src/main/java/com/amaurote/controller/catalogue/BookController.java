@@ -1,6 +1,7 @@
 package com.amaurote.controller.catalogue;
 
 import com.amaurote.catalogue.service.BookService;
+import com.amaurote.catalogue.utils.CatUtils;
 import com.amaurote.controller.BaseController;
 import com.amaurote.dto.BookDTO;
 import com.amaurote.mapper.BookDTOMapper;
@@ -21,12 +22,12 @@ public record BookController(BookService service,
 
     @GetMapping(value = "/{catId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBookByCatalogueId(@PathVariable @NotNull String catId) {
-        var idStr = catId.replaceAll("[^0-9]", "");
+        var catalogueId = CatUtils.stringToCatalogueNumber9(catId);
 
-        if (StringUtils.isBlank(idStr))
+        if(catalogueId == null)
             return badRequest();
 
-        var book = service.getBookByCatalogueNumber(Long.parseLong(idStr));
+        var book = service.getBookByCatalogueNumber(catalogueId);
         return ok(bookDTOMapper.apply(book));
     }
 
