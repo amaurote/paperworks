@@ -42,4 +42,9 @@ public class BookControllerIT {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void search() {
+        // todo
+    }
+
 }

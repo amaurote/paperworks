@@ -1,5 +1,6 @@
 package com.amaurote.dto;
 
+import com.amaurote.domain.entity.Category;
 import com.amaurote.domain.entity.Language;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @Builder
@@ -32,5 +34,8 @@ public class BookDTO {
 
     private Integer pageCount;
     private Integer weight;
+
+    private Category mainCategory;          // todo
+    private Set<Category> otherCategories;  // todo
 
 }

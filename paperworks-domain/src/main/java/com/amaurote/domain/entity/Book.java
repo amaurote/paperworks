@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -52,12 +52,14 @@ public class Book {
     private Integer weight;
 
     @Column(name = "date_created")
-    private Date dateCreated;
+    private Instant dateCreated;
 
     @OneToMany
     @JoinTable(inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authorship;
 
+    @OneToMany(mappedBy = "book")
+    private List<BookCategory> categories;
 
 
 }
