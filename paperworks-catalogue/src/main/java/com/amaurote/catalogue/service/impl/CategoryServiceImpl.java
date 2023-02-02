@@ -6,6 +6,7 @@ import com.amaurote.catalogue.repository.BookCategoryRepository;
 import com.amaurote.catalogue.repository.CategoryRepository;
 import com.amaurote.catalogue.service.CategoryService;
 import com.amaurote.domain.entity.Book;
+import com.amaurote.domain.entity.BookCategory;
 import com.amaurote.domain.entity.Category;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang.NotImplementedException;
@@ -25,20 +26,44 @@ public class CategoryServiceImpl implements CategoryService {
     private final BookCategoryRepository bookCategoryRepository;
 
     @Override
-    public void categorize(Book book, Long categoryId) {
+    @Transactional
+    public void categorize(Book book, long categoryId, boolean isMain) throws CatalogueException {
+        if (book == null)
+            throw new CatalogueException("Book cannot be null");
+
+        var category = getCategoryById(categoryId);
+
+        if (bookCategoryRepository.existsByBookAndCategory(book, category))
+            throw new CatalogueException("Category is already assigned");
+
+        if (isMain) {
+            makeAllBookCategoriesNotMain(book);
+        }
+
+        var bookCategoryToSave = new BookCategory();
+        bookCategoryToSave.setBook(book);
+        bookCategoryToSave.setCategory(category);
+        bookCategoryToSave.setMainCategory(isMain);
+        bookCategoryRepository.save(bookCategoryToSave);
+    }
+
+    @Override
+    public void uncategorize(Book book, long categoryId) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void uncategorize(Book book) {
+    public void uncategorizeAll(Book book) {
         throw new NotImplementedException();
     }
 
     @Override
-    public Category getCategoryById(Long id) throws CatalogueException {
-        if (id == null)
-            throw new CatalogueException("Category ID cannot be null");
+    public void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain) {
+        throw new NotImplementedException();
+    }
 
+    @Override
+    public Category getCategoryById(long id) throws CatalogueException {
         return categoryRepository.findById(id).orElseThrow(() -> new CatalogueException("Category does not exist"));
     }
 
@@ -77,7 +102,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Map<Long, String> generateCategoryPathMap(Long categoryId) throws CatalogueException {
+    public Map<Long, String> generateCategoryPathMap(long categoryId) throws CatalogueException {
         Map<Long, String> pathMap = new HashMap<>();
 
         var category = getCategoryById(categoryId);

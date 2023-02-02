@@ -11,21 +11,23 @@ import java.util.Map;
 
 public interface CategoryService {
 
-    void categorize(Book book, Long categoryId);
-    void uncategorize(Book book);
+    void categorize(Book book, long categoryId, boolean isMain) throws CatalogueException;
+    void uncategorize(Book book, long categoryId);
+    void uncategorizeAll(Book book);
+    void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain);
 
-    Category getCategoryById(Long id) throws CatalogueException;
+    Category getCategoryById(long id) throws CatalogueException;
 
     void createSingleCategory(CategoryCreateRequestDTO dto) throws CatalogueException;
     void buildCategoryPath(String path, Long parentId) throws CatalogueException;
 
-    Map<Long, String> generateCategoryPathMap(Long categoryId) throws CatalogueException;
+    Map<Long, String> generateCategoryPathMap(long categoryId) throws CatalogueException;
     String generateTree();
 
     @Data
-    public class CategoryCreateRequestDTO {
+    class CategoryCreateRequestDTO {
         @NotEmpty
-        @Pattern(regexp = "[a-z_]+")
+        @Pattern(regexp = "[a-z0-9_]+")
         private String name;
 
         private String caption;

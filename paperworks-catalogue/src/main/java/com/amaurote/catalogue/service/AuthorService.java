@@ -13,7 +13,7 @@ public interface AuthorService {
     Author getAuthorById();
 
     @Data
-    public class AuthorCreateRequestDTO {
+    class AuthorCreateRequestDTO {
         private String displayName;
 
         @NotEmpty(message = "firstName is a mandatory field")

@@ -3,6 +3,7 @@ package com.amaurote.social.service.impl;
 import com.amaurote.domain.entity.Book;
 import com.amaurote.domain.entity.User;
 import com.amaurote.domain.entity.UserBookReview;
+import com.amaurote.social.exception.SocialServiceException;
 import com.amaurote.social.repository.UserBookReviewRepository;
 import com.amaurote.social.service.ReviewService;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,11 @@ public record ReviewServiceImpl(UserBookReviewRepository reviewRepository) imple
     }
 
     @Override
+    public UserBookReview getUserBookReviewById(long id) throws SocialServiceException {
+        return reviewRepository.findById(id).orElseThrow(() -> new SocialServiceException("Review does not exist"));
+    }
+
+    @Override
     public void reviewOrUpdate(Book book, User reviewer, String text) {
         var existing = reviewRepository.findByBookAndReviewer(book, reviewer).orElse(null);
         if (existing != null) {
@@ -39,5 +45,10 @@ public record ReviewServiceImpl(UserBookReviewRepository reviewRepository) imple
                     .build();
             reviewRepository.save(newReview);
         }
+    }
+
+    @Override
+    public void deleteReview(UserBookReview review) {
+        reviewRepository.delete(review);
     }
 }
