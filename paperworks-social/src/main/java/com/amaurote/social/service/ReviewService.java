@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-    List<UserBookReview> getBookReviews(Book book);
+    List<UserBookReview> getBookReviews(Book book); // todo pagination
 
     UserBookReview getUserBookReview(Book book, User reviewer);
 

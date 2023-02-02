@@ -12,9 +12,9 @@ import java.util.Map;
 public interface CategoryService {
 
     void categorize(Book book, long categoryId, boolean isMain) throws CatalogueException;
-    void uncategorize(Book book, long categoryId);
-    void uncategorizeAll(Book book);
-    void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain);
+    void uncategorize(Book book, long categoryId) throws CatalogueException;
+    void uncategorizeAll(Book book) throws CatalogueException;
+    void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException;
 
     Category getCategoryById(long id) throws CatalogueException;
 

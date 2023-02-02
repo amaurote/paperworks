@@ -28,6 +28,7 @@ public record CategoryController(CategoryService service,
 
     @GetMapping(value = "/tree", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getCategoryTree() {
+        // todo extend settings
         return ok(service.generateTree());
     }
 

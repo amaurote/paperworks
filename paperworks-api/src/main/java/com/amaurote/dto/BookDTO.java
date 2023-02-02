@@ -35,7 +35,7 @@ public class BookDTO {
     private Integer pageCount;
     private Integer weight;
 
-    private Category mainCategory;          // todo
-    private Set<Category> otherCategories;  // todo
+    private Set<Category> mainCategory;
+    private Set<Category> otherCategories;
 
 }

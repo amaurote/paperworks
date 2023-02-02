@@ -9,7 +9,6 @@ import com.amaurote.domain.entity.Book;
 import com.amaurote.domain.entity.BookCategory;
 import com.amaurote.domain.entity.Category;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,18 +47,39 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void uncategorize(Book book, long categoryId) {
-        throw new NotImplementedException();
+    public void uncategorize(Book book, long categoryId) throws CatalogueException {
+        if (book == null)
+            throw new CatalogueException("Book cannot be null");
+
+        var category = getCategoryById(categoryId);
+
+        bookCategoryRepository.deleteByBookAndCategory(book, category);
     }
 
     @Override
-    public void uncategorizeAll(Book book) {
-        throw new NotImplementedException();
+    public void uncategorizeAll(Book book) throws CatalogueException {
+        if (book == null)
+            throw new CatalogueException("Book cannot be null");
+
+        bookCategoryRepository.deleteAllByBook(book);
     }
 
     @Override
-    public void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain) {
-        throw new NotImplementedException();
+    @Transactional
+    public void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException {
+        if (book == null)
+            throw new CatalogueException("Book cannot be null");
+
+        var category = getCategoryById(categoryId);
+
+        var bookCategory = bookCategoryRepository.findByBookAndCategory(book, category)
+                .orElseThrow(() -> new CatalogueException("The book does not have this category"));
+
+        if (!bookCategory.isMainCategory() && isMain)
+            makeAllBookCategoriesNotMain(book);
+
+        bookCategory.setMainCategory(isMain);
+        bookCategoryRepository.save(bookCategory);
     }
 
     @Override

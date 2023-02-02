@@ -24,5 +24,5 @@ public class BookCategory {
 
     @Convert(converter = org.hibernate.type.YesNoConverter.class)
     @Column(nullable = false)
-    private Boolean mainCategory;
+    private boolean mainCategory;
 }

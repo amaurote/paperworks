@@ -2,6 +2,7 @@ package com.amaurote.mapper;
 
 import com.amaurote.catalogue.utils.CatUtils;
 import com.amaurote.domain.entity.Author;
+import com.amaurote.domain.entity.BookCategory;
 import com.amaurote.dto.BookDTO;
 import com.amaurote.domain.entity.Book;
 import org.springframework.stereotype.Service;
@@ -27,11 +28,20 @@ public record BookDTOMapper() implements Function<Book, BookDTO> {
                 .overview(book.getOverview())
                 .yearPublished(book.getYearPublished())
                 .authorship(book.getAuthorship()
-                        .stream().collect(Collectors.toMap(Author::getId, Author::getDisplayName)))
+                        .stream()
+                        .collect(Collectors.toMap(Author::getId, Author::getDisplayName)))
                 .publisher(Collections.singletonMap(book.getPublisher().getId(), book.getPublisher().getName()))
                 .language(book.getLanguage())
                 .pageCount(book.getPages())
                 .weight(book.getWeight())
+                .mainCategory(book.getCategories()
+                        .stream().filter(BookCategory::isMainCategory)
+                        .map(BookCategory::getCategory)
+                        .collect(Collectors.toSet()))
+                .otherCategories(book.getCategories()
+                        .stream().filter(entry -> !entry.isMainCategory())
+                        .map(BookCategory::getCategory)
+                        .collect(Collectors.toSet()))
                 .build();
     }
 
