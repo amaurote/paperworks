@@ -5,18 +5,22 @@ import com.amaurote.domain.entity.Book;
 import com.amaurote.domain.entity.Category;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CategoryService {
 
-    void categorize(Book book, long categoryId, boolean isMain) throws CatalogueException;
-    void uncategorize(Book book, long categoryId) throws CatalogueException;
-    void uncategorizeAll(Book book) throws CatalogueException;
-    void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException;
+    void assign(Book book, long categoryId, boolean isMain) throws CatalogueException;
+    void unassign(Book book, long categoryId) throws CatalogueException;
+    void unassignAll(Book book) throws CatalogueException;
+    void toggleMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException;
 
     Category getCategoryById(long id) throws CatalogueException;
+    List<Category> getChildCategories(Long parentId) throws CatalogueException;
 
     void createSingleCategory(CategoryCreateRequestDTO dto) throws CatalogueException;
     void buildCategoryPath(String path, Long parentId) throws CatalogueException;
@@ -25,6 +29,8 @@ public interface CategoryService {
     String generateTree();
 
     @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     class CategoryCreateRequestDTO {
         @NotEmpty
         @Pattern(regexp = "[a-z0-9_]+")

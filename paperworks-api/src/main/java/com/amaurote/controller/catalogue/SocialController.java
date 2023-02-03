@@ -32,7 +32,6 @@ public record SocialController(BookService bookService,
             return badRequest();
 
         var book = bookService.getBookByCatalogueNumber(catalogueId);
-
         if (book == null)
             return notFound();
 
@@ -41,8 +40,8 @@ public record SocialController(BookService bookService,
 
     @PutMapping(value = "/rating")
     public ResponseEntity<Void> rateOrUpdate(
-            @RequestParam(name = "book", required = true) @NotEmpty String catId,
-            @RequestParam(name = "value", required = true) @NotNull @Min(0) @Max(5) Integer value) {
+            @RequestParam(name = "book") @NotEmpty String catId,
+            @RequestParam(name = "value") @NotNull @Min(0) @Max(5) Integer value) {
 
 //        var catalogueId = CatUtils.stringToCatalogueNumber9(catId);
 //        if (catalogueId == null)
@@ -84,7 +83,6 @@ public record SocialController(BookService bookService,
             return badRequest();
 
         var book = bookService.getBookByCatalogueNumber(catalogueId);
-
         if (book == null)
             return notFound();
 

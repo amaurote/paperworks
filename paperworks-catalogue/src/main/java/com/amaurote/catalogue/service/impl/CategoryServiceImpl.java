@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public void categorize(Book book, long categoryId, boolean isMain) throws CatalogueException {
+    public void assign(Book book, long categoryId, boolean isMain) throws CatalogueException {
         if (book == null)
             throw new CatalogueException("Book cannot be null");
 
@@ -47,26 +48,28 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void uncategorize(Book book, long categoryId) throws CatalogueException {
+    public void unassign(Book book, long categoryId) throws CatalogueException {
         if (book == null)
             throw new CatalogueException("Book cannot be null");
 
         var category = getCategoryById(categoryId);
 
         bookCategoryRepository.deleteByBookAndCategory(book, category);
+        bookCategoryRepository.flush();
     }
 
     @Override
-    public void uncategorizeAll(Book book) throws CatalogueException {
+    public void unassignAll(Book book) throws CatalogueException {
         if (book == null)
             throw new CatalogueException("Book cannot be null");
 
         bookCategoryRepository.deleteAllByBook(book);
+        bookCategoryRepository.flush();
     }
 
     @Override
     @Transactional
-    public void toggleBookMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException {
+    public void toggleMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException {
         if (book == null)
             throw new CatalogueException("Book cannot be null");
 
@@ -85,6 +88,12 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(long id) throws CatalogueException {
         return categoryRepository.findById(id).orElseThrow(() -> new CatalogueException("Category does not exist"));
+    }
+
+    @Override
+    public List<Category> getChildCategories(Long parentId) throws CatalogueException {
+        var parent = getParentCategoryById(parentId);
+        return categoryRepository.findCategoriesByParent(parent);
     }
 
     @Override
