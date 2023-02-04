@@ -12,19 +12,19 @@ public class CatUtils {
         return 100_000_000L + rand.nextLong(900_000_000L);
     }
 
-    public static String prettifyCatalogueNumber9(long catId) {
-        if (catId < 0 || catId > 999_999_999)
-            return Long.toString(catId);
+    public static String prettifyCatalogueNumber9(long catalogueId) {
+        if (catalogueId < 0 || catalogueId > 999_999_999)
+            return Long.toString(catalogueId);
 
-        var leadingZeroes = String.format("%09d", catId);
+        var leadingZeroes = String.format("%09d", catalogueId);
         return leadingZeroes.substring(0, 3) + '-' + leadingZeroes.substring(3, 6) + '-' + leadingZeroes.substring(6);
     }
 
-    public static Long stringToCatalogueNumber9(String catIdStr) {
-        if(catIdStr == null)
+    public static Long stringToCatalogueNumber9(String idStr) {
+        if(idStr == null)
             return null;
 
-        var numeric = catIdStr.replaceAll("[^0-9]", "");
+        var numeric = idStr.replaceAll("[^0-9]", "");
 
         if (StringUtils.isBlank(numeric))
             return null;
