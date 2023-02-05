@@ -5,28 +5,20 @@ import org.springframework.http.ResponseEntity;
 
 public interface BaseController {
 
-    default <T> ResponseEntity<T> response(HttpStatus status) {
-        return new ResponseEntity<>(status);
-    }
-
-    default <T> ResponseEntity<T> response(HttpStatus status, T payload) {
-        return new ResponseEntity<>(payload, status);
-    }
-
-    default ResponseEntity<Void> ok() {
-        return response(HttpStatus.OK);
+    default <T> ResponseEntity<T> ok() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     default <T> ResponseEntity<T> ok(T payload) {
-        return response(HttpStatus.OK, payload);
+        return new ResponseEntity<>(payload, HttpStatus.OK);
     }
 
     default <T> ResponseEntity<T> badRequest() {
-        return response(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     default <T> ResponseEntity<T> badRequest(T payload) {
-        return response(HttpStatus.BAD_REQUEST, payload);
+        return new ResponseEntity<>(payload, HttpStatus.BAD_REQUEST);
     }
 
     default <T> ResponseEntity<T> notFound() {
