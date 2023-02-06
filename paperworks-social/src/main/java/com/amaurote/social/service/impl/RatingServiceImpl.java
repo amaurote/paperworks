@@ -18,6 +18,12 @@ public record RatingServiceImpl(UserBookRatingRepository ratingRepository) imple
     }
 
     @Override
+    public Integer getUserBookRating(Book book, User reviewer) {
+        return ratingRepository.findByBookAndReviewer(book, reviewer)
+                .map(UserBookRating::getScore).orElse(null);
+    }
+
+    @Override
     public void rateOrUpdate(Book book, User reviewer, int score) throws SocialServiceException {
         if (book == null || reviewer == null)
             throw new SocialServiceException("Unable to map rating");

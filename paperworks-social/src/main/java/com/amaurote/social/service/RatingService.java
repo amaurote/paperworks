@@ -9,6 +9,8 @@ public interface RatingService {
 
     RatingAggregateResults getBookRating(Book book);
 
+    Integer getUserBookRating(Book book, User reviewer);
+
     void rateOrUpdate(Book book, User reviewer, int score) throws SocialServiceException;
 
     void deleteRating(Book book, User reviewer);

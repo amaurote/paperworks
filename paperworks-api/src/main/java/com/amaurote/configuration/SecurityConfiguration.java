@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @RequiredArgsConstructor
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
@@ -22,15 +22,22 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
+        http
+                .authorizeHttpRequests()
                 .requestMatchers("/catalogue/**")
                 .permitAll()
 
+                .requestMatchers("/users/**")
+                .permitAll()
+
                 .requestMatchers("/customer/**")
-                .hasRole("ROLE_USER")
+                .hasRole("USER")
 
                 .requestMatchers("/admin/**")
-                .hasRole("ROLE_ADMIN");
+                .hasRole("ADMIN");
+
+        http
+                .csrf().disable();
 
         return http.build();
     }
