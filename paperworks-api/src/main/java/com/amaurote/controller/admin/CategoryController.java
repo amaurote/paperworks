@@ -1,10 +1,10 @@
 package com.amaurote.controller.admin;
 
 
-import com.amaurote.catalogue.exception.CatalogueException;
-import com.amaurote.catalogue.service.BookService;
-import com.amaurote.catalogue.service.CategoryService;
-import com.amaurote.catalogue.utils.CatUtils;
+import com.amaurote.catalog.exception.CatalogException;
+import com.amaurote.catalog.service.BookService;
+import com.amaurote.catalog.service.CategoryService;
+import com.amaurote.catalog.utils.CatalogUtils;
 import com.amaurote.controller.BaseController;
 import com.amaurote.mapper.CategoryDTOMapper;
 import jakarta.validation.Valid;
@@ -18,18 +18,18 @@ public record CategoryController(CategoryService categoryService,
                                  BookService bookService,
                                  CategoryDTOMapper categoryDTOMapper) implements BaseController {
 
-    @PutMapping(value = "/assign/{catalogueId}")
+    @PutMapping(value = "/assign/{catalogId}")
     public ResponseEntity<?> assignCategory(
-            @PathVariable(name = "catalogueId") String idStr,
+            @PathVariable(name = "catalogId") String idStr,
             @RequestParam(name = "category") long categoryId,
             @RequestParam(name = "isMain", required = false, defaultValue = "false") boolean isMain)
-            throws CatalogueException {
+            throws CatalogException {
 
-        var catalogueId = CatUtils.stringToCatalogueNumber9(idStr);
-        if (catalogueId == null)
+        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
+        if (catalogId == null)
             return badRequest();
 
-        var book = bookService.getBookByCatalogueNumber(catalogueId);
+        var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
             return notFound();
 
@@ -37,16 +37,16 @@ public record CategoryController(CategoryService categoryService,
         return ok();
     }
 
-    @PostMapping(value = "/unassign/{catalogueId}")
+    @PostMapping(value = "/unassign/{catalogId}")
     public ResponseEntity<?> unassignCategory(
-            @PathVariable(name = "catalogueId") String idStr,
-            @RequestParam(name = "category") long categoryId) throws CatalogueException {
+            @PathVariable(name = "catalogId") String idStr,
+            @RequestParam(name = "category") long categoryId) throws CatalogException {
 
-        var catalogueId = CatUtils.stringToCatalogueNumber9(idStr);
-        if (catalogueId == null)
+        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
+        if (catalogId == null)
             return badRequest();
 
-        var book = bookService.getBookByCatalogueNumber(catalogueId);
+        var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
             return notFound();
 
@@ -54,13 +54,13 @@ public record CategoryController(CategoryService categoryService,
         return ok();
     }
 
-    @PostMapping(value = "/unassign-all/{catalogueId}")
-    public ResponseEntity<?> unassignAllCategories(@PathVariable(name = "catalogueId") String idStr) throws CatalogueException {
-        var catalogueId = CatUtils.stringToCatalogueNumber9(idStr);
-        if (catalogueId == null)
+    @PostMapping(value = "/unassign-all/{catalogId}")
+    public ResponseEntity<?> unassignAllCategories(@PathVariable(name = "catalogId") String idStr) throws CatalogException {
+        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
+        if (catalogId == null)
             return badRequest();
 
-        var book = bookService.getBookByCatalogueNumber(catalogueId);
+        var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
             return notFound();
 
@@ -70,13 +70,13 @@ public record CategoryController(CategoryService categoryService,
 
     @PostMapping
     public ResponseEntity<?> createSingleCategory(
-            @RequestBody @Valid CategoryService.CategoryCreateRequestDTO dto) throws CatalogueException {
+            @RequestBody @Valid CategoryService.CategoryCreateRequestDTO dto) throws CatalogException {
         categoryService.createSingleCategory(dto);
         return ok();
     }
 
     @PutMapping(value = "/build-path")
-    public ResponseEntity<?> buildCategoryPath(@RequestBody String path) throws CatalogueException {
+    public ResponseEntity<?> buildCategoryPath(@RequestBody String path) throws CatalogException {
         if (StringUtils.isBlank(path))
             return badRequest();
 
@@ -86,10 +86,4 @@ public record CategoryController(CategoryService categoryService,
         categoryService.buildCategoryPath(path, null); // todo implement an option to change parent category
         return ok();
     }
-
-    public ResponseEntity<?> getCategoryPathMap() {
-        // todo
-        return null;
-    }
-
 }

@@ -1,7 +1,7 @@
 package com.amaurote.controller.customer;
 
-import com.amaurote.catalogue.service.BookService;
-import com.amaurote.catalogue.utils.CatUtils;
+import com.amaurote.catalog.service.BookService;
+import com.amaurote.catalog.utils.CatalogUtils;
 import com.amaurote.controller.BaseController;
 import com.amaurote.mapper.ReviewDTOMapper;
 import com.amaurote.social.exception.SocialServiceException;
@@ -32,11 +32,11 @@ public record CustomerController(BookService bookService,
 
         var reviewer = userService.getUserByUsername(principal.getName());
 
-        var catalogueId = CatUtils.stringToCatalogueNumber9(catId);
-        if (catalogueId == null)
+        var catalogId = CatalogUtils.stringToCatalogNumber9(catId);
+        if (catalogId == null)
             return badRequest();
 
-        var book = bookService.getBookByCatalogueNumber(catalogueId);
+        var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
             return notFound();
 
@@ -51,11 +51,11 @@ public record CustomerController(BookService bookService,
 
         var reviewer = userService.getUserByUsername(principal.getName());
 
-        var catalogueId = CatUtils.stringToCatalogueNumber9(catId);
-        if (catalogueId == null)
+        var catalogId = CatalogUtils.stringToCatalogNumber9(catId);
+        if (catalogId == null)
             return badRequest();
 
-        var book = bookService.getBookByCatalogueNumber(catalogueId);
+        var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
             return notFound();
 
@@ -74,11 +74,11 @@ public record CustomerController(BookService bookService,
 
         var reviewer = userService.getUserByUsername(principal.getName());
 
-        var catalogueId = CatUtils.stringToCatalogueNumber9(catId);
-        if (catalogueId == null)
+        var catalogId = CatalogUtils.stringToCatalogNumber9(catId);
+        if (catalogId == null)
             return badRequest();
 
-        var book = bookService.getBookByCatalogueNumber(catalogueId);
+        var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
             return notFound();
 

@@ -18,8 +18,8 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BookDTO {
 
-    private long catalogueId;
-    private String catalogueIdPretty;
+    private long catalogId;
+    private String catalogIdPretty;
     private String isbn10;
     private String isbn13;
 

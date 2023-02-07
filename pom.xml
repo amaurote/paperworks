@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>paperworks-catalogue</module>
+        <module>paperworks-catalog</module>
         <module>paperworks-social</module>
         <module>paperworks-api</module>
         <module>paperworks-domain</module>

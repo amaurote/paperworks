@@ -1,8 +1,8 @@
 package controller.admin;
 
 import com.amaurote.PaperworksApplication;
-import com.amaurote.catalogue.service.BookService;
-import com.amaurote.catalogue.service.CategoryService;
+import com.amaurote.catalog.service.BookService;
+import com.amaurote.catalog.service.CategoryService;
 import com.amaurote.domain.entity.BookCategory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -26,8 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 @Sql(scripts = {
-        "classpath:scripts/catalogue/catalogue.sql",
-        "classpath:scripts/catalogue/category.sql",
+        "classpath:scripts/catalog/catalog.sql",
+        "classpath:scripts/catalog/category.sql",
         "classpath:/scripts/social/users.sql"})
 @Transactional
 public class CategoryControllerIT {
@@ -51,7 +51,7 @@ public class CategoryControllerIT {
                         .param("isMain", "true"))
                 .andExpect(status().is2xxSuccessful());
 
-        var book = bookService.getBookByCatalogueNumber(BOOK_CAT_ID);
+        var book = bookService.getBookByCatalogNumber(BOOK_CAT_ID);
         assertNotNull(book);
 
         var categories = book.getCategories();
@@ -69,7 +69,7 @@ public class CategoryControllerIT {
                         .param("category", "2"))
                 .andExpect(status().is2xxSuccessful());
 
-        var book = bookService.getBookByCatalogueNumber(BOOK_CAT_ID);
+        var book = bookService.getBookByCatalogNumber(BOOK_CAT_ID);
         assertNotNull(book);
 
         assertEquals(1, book.getCategories().size());
@@ -82,7 +82,7 @@ public class CategoryControllerIT {
         mvc.perform(post("/admin/categories/unassign-all/" + BOOK_CAT_ID))
                 .andExpect(status().is2xxSuccessful());
 
-        var book = bookService.getBookByCatalogueNumber(BOOK_CAT_ID);
+        var book = bookService.getBookByCatalogNumber(BOOK_CAT_ID);
 
         assertNotNull(book);
         assertTrue(book.getCategories().isEmpty());

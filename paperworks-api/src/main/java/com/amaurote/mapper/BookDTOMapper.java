@@ -1,6 +1,6 @@
 package com.amaurote.mapper;
 
-import com.amaurote.catalogue.utils.CatUtils;
+import com.amaurote.catalog.utils.CatalogUtils;
 import com.amaurote.domain.entity.Author;
 import com.amaurote.domain.entity.BookCategory;
 import com.amaurote.dto.BookDTO;
@@ -20,8 +20,8 @@ public record BookDTOMapper() implements Function<Book, BookDTO> {
             return null;
 
         return BookDTO.builder()
-                .catalogueId(book.getCatalogueId())
-                .catalogueIdPretty(CatUtils.prettifyCatalogueNumber9(book.getCatalogueId()))
+                .catalogId(book.getCatalogId())
+                .catalogIdPretty(CatalogUtils.prettifyCatalogNumber9(book.getCatalogId()))
                 .isbn10(book.getIsbn10())
                 .isbn13(book.getIsbn13())
                 .title(book.getTitle())

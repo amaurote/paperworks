@@ -21,8 +21,8 @@ public class Book {
     @GeneratedValue(generator = "id")
     private Long id;
 
-    @Column(name = "catalogue_id", nullable = false, unique = true)
-    private Long catalogueId;
+    @Column(name = "catalog_id", nullable = false, unique = true)
+    private Long catalogId;
 
     @Column(name = "title", nullable = false)
     private String title;

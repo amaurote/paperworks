@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/catalogue/**")
+                .requestMatchers("/catalog/**")
                 .permitAll()
 
                 .requestMatchers("/users/**")

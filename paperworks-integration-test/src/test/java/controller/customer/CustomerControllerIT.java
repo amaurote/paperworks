@@ -1,7 +1,7 @@
 package controller.customer;
 
 import com.amaurote.PaperworksApplication;
-import com.amaurote.catalogue.service.BookService;
+import com.amaurote.catalog.service.BookService;
 import com.amaurote.social.service.RatingService;
 import com.amaurote.social.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 @Sql(scripts = {
-        "classpath:/scripts/catalogue/catalogue.sql",
+        "classpath:/scripts/catalog/catalog.sql",
         "classpath:/scripts/social/users.sql",
         "classpath:/scripts/social/social.sql"})
 @Transactional
@@ -55,7 +55,7 @@ public class CustomerControllerIT {
     @WithMockUser(username = "sokolova1")
     public void rateOrUpdate() throws Exception {
         var user = userService.getUserByUsername("sokolova1");
-        var book = bookService.getBookByCatalogueNumber(123456789L);
+        var book = bookService.getBookByCatalogNumber(123456789L);
 
         mvc.perform(put("/customer/rating")
                         .param("book", "123456789")
@@ -86,7 +86,7 @@ public class CustomerControllerIT {
     @WithMockUser(username = "simonej")
     public void deleteRating() throws Exception {
         var user = userService.getUserByUsername("simonej");
-        var book = bookService.getBookByCatalogueNumber(123456789L);
+        var book = bookService.getBookByCatalogNumber(123456789L);
         var score = ratingService.getUserBookRating(book, user);
         assertEquals(5, score);
 
