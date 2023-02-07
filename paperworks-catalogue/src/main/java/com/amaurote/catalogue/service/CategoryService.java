@@ -14,13 +14,14 @@ import java.util.Map;
 
 public interface CategoryService {
 
+    Category getCategoryById(long id) throws CatalogueException;
+    List<Category> getAllCategories();
+    List<Category> getChildCategories(Long parentId) throws CatalogueException;
+
     void assign(Book book, long categoryId, boolean isMain) throws CatalogueException;
     void unassign(Book book, long categoryId) throws CatalogueException;
     void unassignAll(Book book) throws CatalogueException;
     void toggleMainCategoryFlag(Book book, long categoryId, boolean isMain) throws CatalogueException;
-
-    Category getCategoryById(long id) throws CatalogueException;
-    List<Category> getChildCategories(Long parentId) throws CatalogueException;
 
     void createSingleCategory(CategoryCreateRequestDTO dto) throws CatalogueException;
     void buildCategoryPath(String path, Long parentId) throws CatalogueException;

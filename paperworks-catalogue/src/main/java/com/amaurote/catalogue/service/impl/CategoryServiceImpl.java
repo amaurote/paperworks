@@ -26,6 +26,22 @@ public class CategoryServiceImpl implements CategoryService {
     private final BookCategoryRepository bookCategoryRepository;
 
     @Override
+    public Category getCategoryById(long id) throws CatalogueException {
+        return categoryRepository.findById(id).orElseThrow(() -> new CatalogueException("Category does not exist"));
+    }
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> getChildCategories(Long parentId) throws CatalogueException {
+        var parent = getParentCategoryById(parentId);
+        return categoryRepository.findCategoriesByParent(parent);
+    }
+
+    @Override
     @Transactional
     public void assign(Book book, long categoryId, boolean isMain) throws CatalogueException {
         if (book == null)
@@ -83,17 +99,6 @@ public class CategoryServiceImpl implements CategoryService {
 
         bookCategory.setMainCategory(isMain);
         bookCategoryRepository.save(bookCategory);
-    }
-
-    @Override
-    public Category getCategoryById(long id) throws CatalogueException {
-        return categoryRepository.findById(id).orElseThrow(() -> new CatalogueException("Category does not exist"));
-    }
-
-    @Override
-    public List<Category> getChildCategories(Long parentId) throws CatalogueException {
-        var parent = getParentCategoryById(parentId);
-        return categoryRepository.findCategoriesByParent(parent);
     }
 
     @Override
