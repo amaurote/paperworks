@@ -4,7 +4,6 @@ import com.amaurote.catalog.exception.CatalogException;
 import com.amaurote.catalog.service.BookService;
 import com.amaurote.catalog.service.CategoryService;
 import com.amaurote.catalog.service.LanguageService;
-import com.amaurote.catalog.utils.CatalogUtils;
 import com.amaurote.controller.BaseController;
 import com.amaurote.domain.entity.Language;
 import com.amaurote.dto.BookDTO;
@@ -12,6 +11,7 @@ import com.amaurote.dto.ReviewDTO;
 import com.amaurote.mapper.BookDTOMapper;
 import com.amaurote.mapper.CategoryDTOMapper;
 import com.amaurote.mapper.ReviewDTOMapper;
+import com.amaurote.service.ControllerHelperService;
 import com.amaurote.social.service.RatingService;
 import com.amaurote.social.service.ReviewService;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +26,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/catalog")
-public record CatalogController(BookService bookService,
+public record CatalogController(ControllerHelperService helperService,
+                                BookService bookService,
                                 RatingService ratingService,
                                 ReviewService reviewService,
                                 LanguageService languageService,
@@ -37,12 +38,7 @@ public record CatalogController(BookService bookService,
 
     @GetMapping(value = "/{catalogId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBookByCatalogId(@PathVariable(name = "catalogId") @NotNull String idStr) {
-        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
-
-        if (catalogId == null)
-            return badRequest();
-
-        var book = bookService.getBookByCatalogNumber(catalogId);
+        var book = helperService.getBookByCatalogIdRequest(idStr);
         return ok(bookDTOMapper.apply(book));
     }
 
@@ -57,28 +53,14 @@ public record CatalogController(BookService bookService,
 
     @GetMapping(value = "/{catalogId}/rating", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getBookRating(@PathVariable(name = "catalogId") String idStr) {
-        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
-        if (catalogId == null)
-            return badRequest();
-
-        var book = bookService.getBookByCatalogNumber(catalogId);
-        if (book == null)
-            return notFound();
-
+        var book = helperService.getBookByCatalogIdRequest(idStr);
         return ok(ratingService.getBookRating(book));
     }
 
     // todo pagination
     @GetMapping(value = "/{catalogId}/reviews", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ReviewDTO>> getBookReviews(@PathVariable(name = "catalogId") String idStr) {
-        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
-        if (catalogId == null)
-            return badRequest();
-
-        var book = bookService.getBookByCatalogNumber(catalogId);
-        if (book == null)
-            return notFound();
-
+        var book = helperService.getBookByCatalogIdRequest(idStr);
         return ok(reviewService.getBookReviews(book).stream().map(reviewDTOMapper).collect(Collectors.toList()));
     }
 

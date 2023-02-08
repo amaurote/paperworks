@@ -41,7 +41,7 @@ public class CategoryControllerIT {
     @Autowired
     private MockMvc mvc;
 
-    private final long BOOK_CAT_ID = 123456789;
+    private final long BOOK_CAT_ID = 123456789L;
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})

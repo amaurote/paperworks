@@ -14,4 +14,6 @@ public interface UserBookReviewRepository extends JpaRepository<UserBookReview, 
     List<UserBookReview> findAllByBook(Book book);
 
     Optional<UserBookReview> findByBookAndReviewer(Book book, User reviewer);
+
+    void deleteByBookAndReviewer(Book book, User reviewer);
 }

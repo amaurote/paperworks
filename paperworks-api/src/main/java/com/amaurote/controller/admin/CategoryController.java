@@ -2,11 +2,10 @@ package com.amaurote.controller.admin;
 
 
 import com.amaurote.catalog.exception.CatalogException;
-import com.amaurote.catalog.service.BookService;
 import com.amaurote.catalog.service.CategoryService;
-import com.amaurote.catalog.utils.CatalogUtils;
 import com.amaurote.controller.BaseController;
 import com.amaurote.mapper.CategoryDTOMapper;
+import com.amaurote.service.ControllerHelperService;
 import jakarta.validation.Valid;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/categories")
-public record CategoryController(CategoryService categoryService,
-                                 BookService bookService,
+public record CategoryController(ControllerHelperService helperService,
+                                 CategoryService categoryService,
                                  CategoryDTOMapper categoryDTOMapper) implements BaseController {
 
     @PutMapping(value = "/assign/{catalogId}")
@@ -25,14 +24,7 @@ public record CategoryController(CategoryService categoryService,
             @RequestParam(name = "isMain", required = false, defaultValue = "false") boolean isMain)
             throws CatalogException {
 
-        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
-        if (catalogId == null)
-            return badRequest();
-
-        var book = bookService.getBookByCatalogNumber(catalogId);
-        if (book == null)
-            return notFound();
-
+        var book = helperService.getBookByCatalogIdRequest(idStr);
         categoryService.assign(book, categoryId, isMain);
         return ok();
     }
@@ -42,28 +34,15 @@ public record CategoryController(CategoryService categoryService,
             @PathVariable(name = "catalogId") String idStr,
             @RequestParam(name = "category") long categoryId) throws CatalogException {
 
-        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
-        if (catalogId == null)
-            return badRequest();
-
-        var book = bookService.getBookByCatalogNumber(catalogId);
-        if (book == null)
-            return notFound();
-
+        var book = helperService.getBookByCatalogIdRequest(idStr);
         categoryService.unassign(book, categoryId);
         return ok();
     }
 
     @PostMapping(value = "/unassign-all/{catalogId}")
     public ResponseEntity<?> unassignAllCategories(@PathVariable(name = "catalogId") String idStr) throws CatalogException {
-        var catalogId = CatalogUtils.stringToCatalogNumber9(idStr);
-        if (catalogId == null)
-            return badRequest();
 
-        var book = bookService.getBookByCatalogNumber(catalogId);
-        if (book == null)
-            return notFound();
-
+        var book = helperService.getBookByCatalogIdRequest(idStr);
         categoryService.unassignAll(book);
         return ok();
     }
