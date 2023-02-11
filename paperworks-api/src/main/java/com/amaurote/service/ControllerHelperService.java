@@ -13,11 +13,11 @@ public record ControllerHelperService(BookService bookService) {
     public Book getBookByCatalogIdRequest(String catalogIdStr) {
         var catalogId = CatalogUtils.stringToCatalogNumber9(catalogIdStr);
         if (catalogId == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);  // replace with custom
 
         var book = bookService.getBookByCatalogNumber(catalogId);
         if (book == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND); // replace with custom
 
         return book;
     }
